@@ -34,7 +34,9 @@ namespace VisualObjects.WebService
 
             await Task.WhenAll(tasks);
 
-            return "[" + String.Join(",", tasks.Select(task => task.Result)) + "]";
+            var fullJson = "[" + String.Join(",", tasks.Select(task => task.Result)) + "]";
+
+            return fullJson;
         }
 
         private Task<string> GetObjectAsync(ActorId objectId, CancellationToken cancellationToken)

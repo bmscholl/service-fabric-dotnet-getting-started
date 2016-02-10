@@ -121,7 +121,7 @@ namespace VisualObjects.WebService
                                         }
 
                                         // wait a bit and continue. This determines the client refresh rate.
-                                        await Task.Delay(TimeSpan.FromMilliseconds(5), cancellationToken);
+                                        await Task.Delay(TimeSpan.FromMilliseconds(1), cancellationToken);
                                     }
                                 }
 
