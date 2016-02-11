@@ -52,37 +52,43 @@ namespace VisualObjects.WebService
 
         protected override Task RunAsync(CancellationToken cancellationToken)
         {
-            while (true)
+            cancellationToken.ThrowIfCancellationRequested();
+            List<Task> runners = new List<Task>();
+
+            foreach (ActorId id in this.actorIds)
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                IVisualObjectActor actorProxy = ActorProxy.Create<IVisualObjectActor>(id, this.ActorServiceUri);
 
-                foreach (ActorId id in this.actorIds)
+                Task t = Task.Run(async () =>
                 {
-                    IVisualObjectActor actorProxy = ActorProxy.Create<IVisualObjectActor>(id, this.ActorServiceUri);
-
-                    Task.Run(async () =>
+                    while (true)
                     {
-                        while (true)
+                        cancellationToken.ThrowIfCancellationRequested();
+
+                        try
                         {
-                            cancellationToken.ThrowIfCancellationRequested();
-
-                            try
-                            {
-                                this.objectBox.SetObjectString(id, await actorProxy.GetStateAsJsonAsync());
-                            }
-                            catch (Exception)
-                            {
-                                // ignore the exceptions
-                                this.objectBox.SetObjectString(id, string.Empty);
-                            }
-
-                            await Task.Delay(TimeSpan.FromMilliseconds(100));
+                            this.objectBox.SetObjectString(id, await actorProxy.GetStateAsJsonAsync());
                         }
-                    }
-                    , cancellationToken);
+                        catch (Exception)
+                        {
+                            // ignore the exceptions
+                            this.objectBox.SetObjectString(id, string.Empty);
+                        }
+                        finally
+                        {
+                            this.objectBox.computeJson();
+                        }
 
+                        await Task.Delay(TimeSpan.FromMilliseconds(10));
+                    }
                 }
+                , cancellationToken);
+
+                runners.Add(t);
+
             }
+
+            return Task.WhenAll(runners);
         }
 
         private IEnumerable<ActorId> CreateVisualObjectActorIds(int numObjects)
