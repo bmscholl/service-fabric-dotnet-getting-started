@@ -94,9 +94,7 @@ namespace VisualObjects.WebService
                                     while (true)
                                     {
                                         cancellationToken.ThrowIfCancellationRequested();
-
-                                        string response = await this.visualObjectBox.GetObjectsAsync(cancellationToken);
-                                        byte[] buffer = Encoding.UTF8.GetBytes(response);
+                                        byte[] buffer = Encoding.UTF8.GetBytes(this.visualObjectBox.GetJson());
 
                                         try
                                         {

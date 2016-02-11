@@ -5,11 +5,11 @@
 
 namespace VisualObjects.WebService
 {
-    using System.Threading;
-    using System.Threading.Tasks;
+    using Microsoft.ServiceFabric.Actors;
 
     public interface IVisualObjectsBox
     {
-        Task<string> GetObjectsAsync(CancellationToken cancellationToken);
+        string GetJson();
+        void SetObjectString(ActorId actorId, string objectJson);
     }
 }

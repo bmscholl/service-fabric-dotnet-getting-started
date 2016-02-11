@@ -115,7 +115,7 @@ namespace VisualObjects.Common
 
             if (rotate)
             {
-                this.Rotation += 10;
+                this.Rotation += 2;
             }
         }
 
