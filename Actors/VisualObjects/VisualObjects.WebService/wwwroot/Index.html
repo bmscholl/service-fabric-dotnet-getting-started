@@ -4,13 +4,17 @@
     <script type="text/javascript" src="Scripts/visualobjects.js"></script>
     <script type="text/javascript" src="Scripts/paper-full.js"></script>
     <style type="text/css">
+        body {
+            background-color: black;
+        }
+
         canvas {
-            width: 98%;
-            height: 97%;
+            width: 99%;
+            height: 98%;
         }
     </style>
 </head>
 <body onload="webGLStart();">
-    <canvas id="canvas" resize> </canvas>
+    <canvas id="canvas" resize keepalive="true"> </canvas>
 </body>
 </html>
