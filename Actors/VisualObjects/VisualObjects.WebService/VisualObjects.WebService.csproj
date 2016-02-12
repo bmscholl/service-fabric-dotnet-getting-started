@@ -115,10 +115,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\packages\paperjs.0.9.22\content\Scripts\paper-core.js">
-      <Link>wwwroot\Scripts\paper-core.js</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="..\packages\paperjs.0.9.22\content\Scripts\paper-full.js">
       <Link>wwwroot\Scripts\paper-full.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
