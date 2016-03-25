@@ -7,6 +7,7 @@ namespace VisualObjects.WebService
 {
     using Common;
     using Microsoft.ServiceFabric.Actors;
+    using Microsoft.ServiceFabric.Actors.Client;
     using Microsoft.ServiceFabric.Services.Communication.Runtime;
     using Microsoft.ServiceFabric.Services.Runtime;
     using System;
@@ -23,16 +24,16 @@ namespace VisualObjects.WebService
         private IVisualObjectsBox objectBox;
         private IEnumerable<ActorId> actorIds;
 
-        public Service()
+        public Service(StatelessServiceContext serviceContext) : base(serviceContext)
         {
-            CodePackageActivationContext context = FabricRuntime.GetActivationContext();
+            ServiceContext context = serviceContext;
 
-            ConfigurationPackage config = context.GetConfigurationPackageObject("Config");
+            ConfigurationPackage config = context.CodePackageActivationContext.GetConfigurationPackageObject("Config");
             ConfigurationSection section = config.Settings.Sections["VisualObjectsBoxSettings"];
 
             int numObjects = int.Parse(section.Parameters["ObjectCount"].Value);
             string serviceName = section.Parameters["ServiceName"].Value;
-            string appName = context.ApplicationName;
+            string appName = context.CodePackageActivationContext.ApplicationName;
 
             this.ActorServiceUri = new Uri(appName + "/" + serviceName);
             this.objectBox = new VisualObjectsBox();

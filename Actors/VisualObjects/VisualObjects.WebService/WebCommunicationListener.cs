@@ -23,9 +23,9 @@ namespace VisualObjects.WebService
 
         // OWIN server handle.
         private IDisposable webApp;
-        private readonly ServiceInitializationParameters serviceInitializationParameters;
+        private readonly ServiceContext serviceInitializationParameters;
 
-        public WebCommunicationListener(string appRoot, ServiceInitializationParameters serviceInitializationParameters)
+        public WebCommunicationListener(string appRoot, ServiceContext serviceInitializationParameters)
         {
             this.appRoot = appRoot;
             this.serviceInitializationParameters = serviceInitializationParameters;

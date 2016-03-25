@@ -24,22 +24,22 @@ namespace VisualObjects.WebService
         private HttpListener httpListener;
         private readonly string appRoot;
         private readonly string webSocketRoot;
-        private readonly ServiceInitializationParameters serviceInitializationParameters;
+        private readonly ServiceContext serviceContext;
         private CancellationTokenSource cts = new CancellationTokenSource();
 
-        public WebSocketApp(IVisualObjectsBox visualObjectBox, string appRoot, string webSocketRoot, ServiceInitializationParameters initParams)
+        public WebSocketApp(IVisualObjectsBox visualObjectBox, string appRoot, string webSocketRoot, ServiceContext initParams)
         {
             this.visualObjectBox = visualObjectBox;
             this.appRoot = string.IsNullOrWhiteSpace(appRoot) ? string.Empty : appRoot.TrimEnd('/') + '/';
             this.webSocketRoot = string.IsNullOrWhiteSpace(webSocketRoot) ? string.Empty : webSocketRoot.TrimEnd('/') + '/';
-            this.serviceInitializationParameters = initParams;
+            this.serviceContext = initParams;
         }
 
         public Task<string> OpenAsync(CancellationToken cancellationToken)
         {
             ServiceEventSource.Current.Message("Initialize");
 
-            EndpointResourceDescription serviceEndpoint = this.serviceInitializationParameters.CodePackageActivationContext.GetEndpoint("ServiceEndpoint");
+            EndpointResourceDescription serviceEndpoint = this.serviceContext.CodePackageActivationContext.GetEndpoint("ServiceEndpoint");
             int port = serviceEndpoint.Port;
 
             this.listeningAddress = string.Format(CultureInfo.InvariantCulture, "http://+:{0}/{1}{2}", port, this.appRoot, this.webSocketRoot);
